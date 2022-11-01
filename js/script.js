@@ -51,7 +51,7 @@ window.addEventListener('mousedown',(event) =>{
     currentPlanet.style.top = `${event.pageY}px`;
     currentPlanet.style.left = `${event.pageX}px`;
     currentPlanet.style.transform = `scale(${scale}%)`
-    currentPlanet = new Planet(currentPlanet,event.pageY,event.pageX,Math.random()*6.28,1);
+    currentPlanet = new Planet(currentPlanet,event.pageY,event.pageX,Math.random()*6.28,1.5);
     currentPlanet.display();
     hold  = setInterval(() =>{
         currentPlanet.img.style.transform = `scale(${scale}%)`
