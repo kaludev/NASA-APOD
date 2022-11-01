@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    font-family: 'Merriweather', serif;
 }
 
 header{
@@ -34,8 +35,32 @@ header div p{
 }
 
 body{
+    position: absolute;
+    top: 0;
+    left: 0;
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh;
     background-image: url('../img/NASA_logo.png');
+    overflow: hidden;
+}
+html{
+    position: relative;
+}
+
+.main-section{
+    margin-top: 50px;
+    min-height: 500px;
+    width: 95vw;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 30px;
+    z-index: 1;
+}
+
+.planet{
+    position: absolute;
+    display: block;
+    z-index: -1;
 }
