@@ -55,7 +55,10 @@ window.addEventListener('mousedown',(event) =>{
     currentPlanet.display();
     hold  = setInterval(() =>{
         currentPlanet.img.style.transform = `scale(${scale}%)`
-        scale+= 0.1;
+        if(scale <100){
+            scale+= 0.3;
+        }
+        
     },5)
     currentIndex++;
     currentIndex = currentIndex%8;
