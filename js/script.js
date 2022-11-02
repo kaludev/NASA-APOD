@@ -149,13 +149,15 @@ const deleteDays = () =>{
     }
 }
 const removeActiveM = () =>{
-    document.querySelectorAll('.activeMonth').forEach(month =>{
-        month.classList.remove('.activeMonth')
+    let monthses = document.querySelectorAll('.activeMonth')
+    console.log(monthses)
+    monthses.forEach(month =>{
+        month.classList.remove('activeMonth')
     })
 }
 const removeActiveD = () =>{
     document.querySelectorAll('.activeDay').forEach(day =>{
-        day.classList.remove('.activeDay')
+        day.classList.remove('activeDay')
     })
 }
 const changeDate = async (elem) =>{
@@ -206,8 +208,8 @@ for(let i = 0;i<12;i++){
     meseci.appendChild(currentMonth)
 }
 
-const changeYear = async (year) =>{
-    currDate.setFullYear(year)
+const changeYear = async (yearChange) =>{
+    currDate.setFullYear(yearChange)
     year.textContent = `${currDate.getFullYear()}`;
     generateDays();
     await DateChanged()
