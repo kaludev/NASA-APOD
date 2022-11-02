@@ -36,9 +36,7 @@ class Planet{
     }
 }
 document.addEventListener('DOMContentLoaded',async () =>{
-    let URI = await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true`)
-    document.body.style.backgroundImage = 'url(\''+URI+'\')'
-    document.querySelector('#download').href = URI;
+    document.body.style.backgroundImage = 'url(\''+await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=2022-11-01`)+'\')'
 });
 let hold;
 let scale = 50;
@@ -50,7 +48,11 @@ window.addEventListener('mousedown',(event) =>{
     if(!hold){
         currentPlanet = document.createElement('img');
         currentPlanet.classList.add('planet')
-        currentPlanet.src = './img/'+srcs[currentIndex];
+        if(Math.random()<0.02){
+            currentPlanet.src = './img/Easter egg.png'
+        }else{
+            currentPlanet.src = './img/'+srcs[currentIndex];
+        }
         currentPlanet.style.top = `${event.pageY-140}px`;
         currentPlanet.style.left = `${event.pageX-140}px`;
         currentPlanet.style.transform = `scale(${scale}%)`
@@ -89,3 +91,21 @@ setInterval(() =>{
     }
     
 },5)
+
+async function toDataURL(url) {
+    const blob = await fetch("https://api.codetabs.com/v1/proxy?quest="+ url).then(res => res.blob());
+    return URL.createObjectURL(blob);
+}
+
+async function download(URL) {
+    const a = document.createElement("a");
+    a.href = await toDataURL(await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true`));
+    a.download = "myImage.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+document.querySelector('#download').addEventListener('click',() =>{
+    download()
+})
