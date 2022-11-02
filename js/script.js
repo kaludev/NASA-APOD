@@ -36,7 +36,9 @@ class Planet{
     }
 }
 document.addEventListener('DOMContentLoaded',async () =>{
-    document.body.style.backgroundImage = 'url(\''+await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true`)+'\')'
+    let URI = await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true`)
+    document.body.style.backgroundImage = 'url(\''+URI+'\')'
+    document.querySelector('#download').href = URI;
 });
 let hold;
 let scale = 50;
@@ -45,30 +47,34 @@ let currentPlanet;
 let srcs = ['mercury.png','venus.png','earth.png','mars.png','jupyter.png','saturn.png','uranus.png','neptun.png']
 
 window.addEventListener('mousedown',(event) =>{
-    currentPlanet = document.createElement('img');
-    currentPlanet.classList.add('planet')
-    currentPlanet.src = './img/'+srcs[currentIndex];
-    currentPlanet.style.top = `${event.pageY-140}px`;
-    currentPlanet.style.left = `${event.pageX-140}px`;
-    currentPlanet.style.transform = `scale(${scale}%)`
-    currentPlanet = new Planet(currentPlanet,event.pageY-140,event.pageX-140,Math.random()*6.28,1.5);
-    currentPlanet.display();
-    hold  = setInterval(() =>{
-        currentPlanet.img.style.transform = `scale(${scale}%)`
-        if(scale <100){
-            scale+= 0.3;
-        }
-        
-    },5)
-    currentIndex++;
-    currentIndex = currentIndex%8;
+    if(!hold){
+        currentPlanet = document.createElement('img');
+        currentPlanet.classList.add('planet')
+        currentPlanet.src = './img/'+srcs[currentIndex];
+        currentPlanet.style.top = `${event.pageY-140}px`;
+        currentPlanet.style.left = `${event.pageX-140}px`;
+        currentPlanet.style.transform = `scale(${scale}%)`
+        currentPlanet = new Planet(currentPlanet,event.pageY-140,event.pageX-140,Math.random()*6.28,1.5);
+        currentPlanet.display();
+        hold  = setInterval(() =>{
+            currentPlanet.img.style.transform = `scale(${scale}%)`
+            if(scale <100){
+                scale+= 0.3;
+            }
+            
+        },5)
+        currentIndex++;
+        currentIndex = currentIndex%8;
+    }
 })
 window.addEventListener('mouseup',(event) =>{
-    clearInterval(hold)
-    scale = 50;
-    planets.push(currentPlanet)
-    hold = undefined;
-    currentPlanet = undefined;
+    if(hold){
+        clearInterval(hold)
+        scale = 50;
+        planets.push(currentPlanet)
+        hold = undefined;
+        currentPlanet = undefined;
+    }
 })
 
 
