@@ -13,6 +13,8 @@ async function APICall(URL){
     }
 }
 let planets = [];
+let currentImage = document.querySelector('#currentImage')
+let currDate = new Date()
 class Planet{
     constructor(img,top,left,angle,speed){
         this.img = img;
@@ -37,6 +39,10 @@ class Planet{
 }
 document.addEventListener('DOMContentLoaded',async () =>{
     document.body.style.backgroundImage = 'url(\''+await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=2022-11-01`)+'\')'
+    const URL = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=${currDate.getFullYear()}-${currDate.getMonth()+1}-${currDate.getDate()}`
+    console.log(URL)
+    currentImage.src = await APICall(URL)
+
 });
 let hold;
 let scale = 50;
@@ -99,7 +105,7 @@ async function toDataURL(url) {
 
 async function download(URL) {
     const a = document.createElement("a");
-    a.href = await toDataURL(await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true`));
+    a.href = await toDataURL(await APICall(`https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=${currDate.getFullYear()}-${currDate.getMonth()+1}-${currDate.getDate()}`));
     a.download = "myImage.png";
     document.body.appendChild(a);
     a.click();
@@ -109,3 +115,4 @@ async function download(URL) {
 document.querySelector('#download').addEventListener('click',() =>{
     download()
 })
+
