@@ -27,8 +27,8 @@ class Planet{
         if(this.top<-this.img.naturalHeight || this.top>(window.innerHeight+this.img.naturalHeight) || this.left<-this.img.naturalHeight || this.left>(window.innerWidth+this.img.naturalHeight)){
             return true;
         }
-        this.img.style.top = `${this.top-70}px`;
-        this.img.style.left = `${this.left-70}px`;
+        this.img.style.top = `${this.top}px`;
+        this.img.style.left = `${this.left}px`;
         return false;
     }
     display(){
@@ -48,10 +48,10 @@ window.addEventListener('mousedown',(event) =>{
     currentPlanet = document.createElement('img');
     currentPlanet.classList.add('planet')
     currentPlanet.src = './img/'+srcs[currentIndex];
-    currentPlanet.style.top = `${event.pageY}px`;
-    currentPlanet.style.left = `${event.pageX}px`;
+    currentPlanet.style.top = `${event.pageY-140}px`;
+    currentPlanet.style.left = `${event.pageX-140}px`;
     currentPlanet.style.transform = `scale(${scale}%)`
-    currentPlanet = new Planet(currentPlanet,event.pageY,event.pageX,Math.random()*6.28,1.5);
+    currentPlanet = new Planet(currentPlanet,event.pageY-140,event.pageX-140,Math.random()*6.28,1.5);
     currentPlanet.display();
     hold  = setInterval(() =>{
         currentPlanet.img.style.transform = `scale(${scale}%)`
