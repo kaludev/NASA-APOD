@@ -116,3 +116,112 @@ document.querySelector('#download').addEventListener('click',() =>{
     download()
 })
 
+document.querySelector('#Date').addEventListener('click',() =>{
+    
+    let overlay = document.querySelector('.overlay')
+    overlay.style.display = 'flex'
+
+})
+const febDays = (year) =>{
+    if(year%400===0){
+        return 29;
+    }else if(year%100===0){
+        return 28;
+    }else if(year%4 ===0){
+        return 29;
+    }else{
+        return 28;
+    }
+}
+const days = [31,febDays(currDate.getFullYear()),31,30,31,30,31,30,30,31,30,31]
+const months = ['JAN','FEB','MAR','APR','MAJ','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+let year = document.querySelector('.year')
+let meseci = document.querySelector('.calendar-months');
+let dani = document.querySelector('.calendar-days')
+
+const DateChanged = async () =>{
+    const URL = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=${currDate.getFullYear()}-${currDate.getMonth()+1}-${currDate.getDate()}`
+    currentImage.src = await APICall(URL)
+}
+const deleteDays = () =>{
+    while (dani.firstChild) {
+        dani.removeChild(dani.firstChild);
+    }
+}
+const removeActiveM = () =>{
+    document.querySelectorAll('.activeMonth').forEach(month =>{
+        month.classList.remove('.activeMonth')
+    })
+}
+const removeActiveD = () =>{
+    document.querySelectorAll('.activeDay').forEach(day =>{
+        day.classList.remove('.activeDay')
+    })
+}
+const changeDate = async (elem) =>{
+    removeActiveD();
+    currDate.setDate(elem.textContent)
+    elem.classList.add('activeDay')
+    await DateChanged()
+}
+const generateDays = () =>{
+    days[1] = febDays()
+    deleteDays();
+    for(let i = 0; i<(currDate.getDay());i++){
+        let elem = document.createElement('div');
+        elem.textContent = '';
+        dani.appendChild(elem)
+
+    }
+    for(let i = 0;i<days[currDate.getMonth()];i++){
+        let elem = document.createElement('div');
+        elem.textContent = i+1;
+        if(currDate.getDate() === i+1){
+            elem.classList.add('activeDay')
+        }
+        elem.addEventListener('click',event =>{
+            changeDate(event.target);
+        })
+        dani.appendChild(elem)
+    }
+}
+const changeMonth = async (elem) =>{
+    currDate.setMonth(months.indexOf(elem.textContent))
+    currDate.setDate(1)
+    removeActiveM();
+    elem.classList.add('activeMonth')
+    generateDays();
+    await DateChanged()
+}
+
+for(let i = 0;i<12;i++){
+    let currentMonth = document.createElement('div');
+    currentMonth.textContent = months[i];
+    if(currDate.getMonth() === i){
+        currentMonth.classList.add('activeMonth')
+    }
+    currentMonth.addEventListener('click',event =>{
+        changeMonth(event.target);
+    })
+    meseci.appendChild(currentMonth)
+}
+
+const changeYear = async (year) =>{
+    currDate.setFullYear(year)
+    year.textContent = `${currDate.getFullYear()}`;
+    generateDays();
+    await DateChanged()
+}
+
+changeYear(currDate.getFullYear())
+document.querySelector('.year-prev').addEventListener('click',() =>{
+    changeYear(currDate.getFullYear()-1);
+})
+
+document.querySelector('.year-next').addEventListener('click',() =>{
+    changeYear(currDate.getFullYear()+1);
+})
+
+
+
+
