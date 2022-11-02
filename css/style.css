@@ -78,7 +78,7 @@ body{
     top: 0px;
     width: 100vw;
     height: 100vh;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.7);;
@@ -128,4 +128,10 @@ body{
 .calendar-days{
     display: grid;
     grid-template-columns: repeat(7,1fr);
+}
+.activeDay{
+    font-weight: bold;
+}
+.activeMonth{
+    font-weight: bold;
 }

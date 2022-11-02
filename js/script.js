@@ -118,7 +118,7 @@ document.querySelector('#download').addEventListener('click',() =>{
 
 document.querySelector('#Date').addEventListener('click',() =>{
     
-    let overlay = document.querySelector('.overlay')
+    let overlay = document.querySelector('.calendar-bg')
     overlay.style.display = 'flex'
 
 })
@@ -224,6 +224,9 @@ document.querySelector('.year-next').addEventListener('click',() =>{
     changeYear(currDate.getFullYear()+1);
 })
 
-
+document.querySelector('.closeCalendar').addEventListener('click',() =>{
+    let overlay = document.querySelector('.calendar-bg')
+    overlay.style.display = 'none'
+})
 
 
