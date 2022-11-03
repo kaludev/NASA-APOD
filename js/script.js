@@ -152,6 +152,7 @@ const DateChanged = async () =>{
     currentImage.src = src;
     document.querySelector('.calendar-photo').style.backgroundImage = `url("${src}")`
 }
+DateChanged()
 const deleteDays = () =>{
     while (dani.firstChild) {
         dani.removeChild(dani.firstChild);
@@ -290,13 +291,14 @@ document.querySelector('.closeCalendar').addEventListener('click',() =>{
 
 document.querySelector('#reset').addEventListener('click',async () =>{
     let today =new Date()
-    await changeYear(today.getFullYear());
+    
+    await currDate.setDate(today.getDate())
     await meseci.querySelectorAll('div').forEach(async month =>{
         if(month.textContent == months[today.getMonth()]){
             await changeMonth(month)
         }
     })
-    await currDate.setDate(today.getDate())
+    await changeYear(today.getFullYear());
     await generateDays()
     DateChanged()
     
