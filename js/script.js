@@ -239,11 +239,9 @@ document.querySelector('#reset').addEventListener('click',async () =>{
             changeMonth(month)
         }
     })
+    currDate.setDate(today.getDate())
     await generateDays()
-    dani.querySelectorAll('div').forEach(day =>{
-        if(day.textContent === days[today.getMonth()]){
-            changeMonth(day)
-        }
-    })
+    DateChanged()
+    
 
 })
