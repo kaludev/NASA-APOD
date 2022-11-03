@@ -170,33 +170,44 @@ const removeActiveD = () =>{
     })
 }
 const changeDate = (elem) =>{
-    removeActiveD();
-    currDate.setDate(elem.textContent)
-    elem.classList.add('activeDay')
-    
+    let tempD = new Date(currDate.getTime())
+    tempD.setDate(elem.textContent)
+    if(tempD.getTime() < new Date().getTime()){
+        currDate = new Date(tempD.getTime())
+        removeActiveD();
+        elem.classList.add('activeDay')
+    }
 }
 const changeMonth = async (elem) =>{
-    if(currDate.getDate()> days[months.indexOf(elem.textContent)])
-        currDate.setDate(days[months.indexOf(elem.textContent)]);
-    currDate.setMonth(months.indexOf(elem.textContent))
-    removeActiveM();
-    elem.classList.add('activeMonth')
-    generateDays();
-    
+    let tempD = new Date(currDate.getTime())
+
+    if(tempD.getDate()> days[months.indexOf(elem.textContent)])
+        tempD.setDate(days[months.indexOf(elem.textContent)]);
+    tempD.setMonth(months.indexOf(elem.textContent))
+    if(tempD.getTime() < new Date().getTime()){
+        currDate = new Date(tempD.getTime())
+        removeActiveM();
+        elem.classList.add('activeMonth')
+        generateDays();
+    }
 }
 const changeMonthByNum = (num) =>{
-    if(currDate.getDate()> days[num])
-        currDate.setDate(days[num]);
-    currDate.setMonth(num)
-
-    removeActiveM();
-    document.querySelectorAll('.calendar-months div').forEach(month =>{
-        if(month.textContent == months[num]){
-            month.classList.add('activeMonth')
-            
-        }
-    })
-    generateDays();
+    let tempD = new Date(currDate.getTime())
+    if(tempD.getDate()> days[num])
+        tempD.setDate(days[num]);
+    tempD.setMonth(num)
+    if(!(tempD.getTime()>new Date().getTime())){
+        currDate = new Date(tempD.getTime())
+        removeActiveM();
+        document.querySelectorAll('.calendar-months div').forEach(month =>{
+            if(month.textContent == months[num]){
+                month.classList.add('activeMonth')
+                
+            }
+        })
+        generateDays();
+    }
+    
     
 }
 const generateDays = () =>{
@@ -207,15 +218,18 @@ const generateDays = () =>{
         elem.textContent = days[(12+currDate.getMonth()-1)%12]-currDate.getDay()+i+1;
         elem.classList.add('prevDays')
         elem.addEventListener('click',() =>{
-            
-           if(!currDate.getMonth()){
-            currDate.setFullYear(currDate.getFullYear()-1)
-            year.textContent = `${currDate.getFullYear()}`;
-           }
-             changeMonthByNum((12+currDate.getMonth()-1)%12)
-            currDate.setDate(elem.textContent);
-            generateDays()
-            DateChanged();
+            let tempD = new Date(currDate.getTime())
+            if(!tempD.getMonth()){
+                tempD.setFullYear(tempD.getFullYear()-1)
+                year.textContent = `${tempD.getFullYear()}`;
+            }
+             changeMonthByNum((12+tempD.getMonth()-1)%12)
+            tempD.setDate(elem.textContent);
+            if(tempD.getTime()<new Date().getTime()){
+                currDate = new Date(tempD.getTime())
+                generateDays()
+                DateChanged();
+            }
         })
         dani.appendChild(elem)
 
@@ -249,9 +263,13 @@ for(let i = 0;i<12;i++){
 }
 
 const changeYear = (yearChange) =>{
-    currDate.setFullYear(yearChange)
-    year.textContent = `${currDate.getFullYear()}`;
-    generateDays();
+    let tempD = new Date(currDate.getTime())
+    tempD.setFullYear(yearChange)
+    if(tempD.getTime()<new Date().getTime()){
+        currDate = new Date(tempD.getTime())
+        year.textContent = `${currDate.getFullYear()}`;
+        generateDays();
+    }
 }
 
 changeYear(currDate.getFullYear())
