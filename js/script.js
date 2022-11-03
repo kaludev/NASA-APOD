@@ -146,6 +146,9 @@ const DateChanged = async () =>{
     curDay.textContent = currDate.getDate();
     const URL = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=${currDate.getFullYear()}-${currDate.getMonth()+1}-${currDate.getDate()}`
     const src = await APICall(URL)
+    console.log(URL)
+    console.log(src)
+    currentImage.src = './img/Empty.png';
     currentImage.src = src;
     document.querySelector('.calendar-photo').style.backgroundImage = `url("${src}")`
 }
@@ -166,11 +169,35 @@ const removeActiveD = () =>{
         day.classList.remove('activeDay')
     })
 }
-const changeDate = async (elem) =>{
+const changeDate = (elem) =>{
     removeActiveD();
     currDate.setDate(elem.textContent)
     elem.classList.add('activeDay')
-    await DateChanged()
+    
+}
+const changeMonth = async (elem) =>{
+    if(currDate.getDate()> days[months.indexOf(elem.textContent)])
+        currDate.setDate(days[months.indexOf(elem.textContent)]);
+    currDate.setMonth(months.indexOf(elem.textContent))
+    removeActiveM();
+    elem.classList.add('activeMonth')
+    generateDays();
+    
+}
+const changeMonthByNum = (num) =>{
+    if(currDate.getDate()> days[num])
+        currDate.setDate(days[num]);
+    currDate.setMonth(num)
+
+    removeActiveM();
+    document.querySelectorAll('.calendar-months div').forEach(month =>{
+        if(month.textContent == months[num]){
+            month.classList.add('activeMonth')
+            
+        }
+    })
+    generateDays();
+    
 }
 const generateDays = () =>{
     days[1] = febDays()
@@ -179,19 +206,15 @@ const generateDays = () =>{
         let elem = document.createElement('div');
         elem.textContent = days[(12+currDate.getMonth()-1)%12]-currDate.getDay()+i+1;
         elem.classList.add('prevDays')
-        elem.addEventListener('click',async () =>{
+        elem.addEventListener('click',() =>{
             
            if(!currDate.getMonth()){
             currDate.setFullYear(currDate.getFullYear()-1)
             year.textContent = `${currDate.getFullYear()}`;
            }
-           await document.querySelectorAll('.calendar-months div').forEach(async month =>{
-            if(month.textContent == months[(12+currDate.getMonth()-1)%12]){
-                await changeMonth(month)
-            }
-            })
-            await currDate.setDate(elem.textContent);
-            await generateDays()
+             changeMonthByNum((12+currDate.getMonth()-1)%12)
+            currDate.setDate(elem.textContent);
+            generateDays()
             DateChanged();
         })
         dani.appendChild(elem)
@@ -203,21 +226,14 @@ const generateDays = () =>{
         if(currDate.getDate() === i+1){
             elem.classList.add('activeDay')
         }
-        elem.addEventListener('click',event =>{
-            changeDate(event.target);
+        elem.addEventListener('click',async event =>{
+            await changeDate(event.target);
+            DateChanged()
         })
         dani.appendChild(elem)
     }
 }
-const changeMonth = async (elem) =>{
-    if(currDate.getDate()> days[currDate.getMonth()-1])
-        currDate.setDate(days[currDate.getMonth()-1]);
-    currDate.setMonth(months.indexOf(elem.textContent))
-    removeActiveM();
-    elem.classList.add('activeMonth')
-    generateDays();
-    await DateChanged()
-}
+
 
 for(let i = 0;i<12;i++){
     let currentMonth = document.createElement('div');
@@ -225,26 +241,28 @@ for(let i = 0;i<12;i++){
     if(currDate.getMonth() === i){
         currentMonth.classList.add('activeMonth')
     }
-    currentMonth.addEventListener('click',event =>{
-        changeMonth(event.target);
+    currentMonth.addEventListener('click',async event =>{
+        await changeMonth(event.target);
+        DateChanged()
     })
     meseci.appendChild(currentMonth)
 }
 
-const changeYear = async (yearChange) =>{
+const changeYear = (yearChange) =>{
     currDate.setFullYear(yearChange)
     year.textContent = `${currDate.getFullYear()}`;
     generateDays();
-    await DateChanged()
 }
 
 changeYear(currDate.getFullYear())
 document.querySelector('.year-prev').addEventListener('click',() =>{
     changeYear(currDate.getFullYear()-1);
+    DateChanged()
 })
 
 document.querySelector('.year-next').addEventListener('click',() =>{
     changeYear(currDate.getFullYear()+1);
+    DateChanged()
 })
 
 document.querySelector('.closeCalendar').addEventListener('click',() =>{
