@@ -145,10 +145,10 @@ const DateChanged = async () =>{
     curMoY.textContent = fullMonths[currDate.getMonth()]+'-'+currDate.getFullYear()
     curDay.textContent = currDate.getDate();
     const URL = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=${currDate.getFullYear()}-${currDate.getMonth()+1}-${currDate.getDate()}`
+    currentImage.src = './img/Empty.png';
     const src = await APICall(URL)
     console.log(URL)
     console.log(src)
-    currentImage.src = './img/Empty.png';
     currentImage.src = src;
     document.querySelector('.calendar-photo').style.backgroundImage = `url("${src}")`
 }
