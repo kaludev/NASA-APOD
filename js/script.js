@@ -233,13 +233,13 @@ document.querySelector('.closeCalendar').addEventListener('click',() =>{
 
 document.querySelector('#reset').addEventListener('click',async () =>{
     let today =new Date()
-    changeYear(today.getFullYear());
-    meseci.querySelectorAll('div').forEach(month =>{
+    await changeYear(today.getFullYear());
+    await meseci.querySelectorAll('div').forEach(async month =>{
         if(month.textContent === months[today.getMonth()]){
-            changeMonth(month)
+            await changeMonth(month)
         }
     })
-    currDate.setDate(today.getDate())
+    await currDate.setDate(today.getDate())
     await generateDays()
     DateChanged()
     
