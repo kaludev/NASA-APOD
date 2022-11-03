@@ -231,12 +231,19 @@ document.querySelector('.closeCalendar').addEventListener('click',() =>{
     overlay.style.display = 'none'
 })
 
-document.querySelector('#reset').addEventListener('click',() =>{
+document.querySelector('#reset').addEventListener('click',async () =>{
     let today =new Date()
     changeYear(today.getFullYear());
     meseci.querySelectorAll('div').forEach(month =>{
-        if(month.textContent === months[today.getMonth()])
+        if(month.textContent === months[today.getMonth()]){
+            changeMonth(month)
+        }
     })
-    changeMonth(months[today.getMonth()])
+    await generateDays()
+    dani.querySelectorAll('div').forEach(day =>{
+        if(day.textContent === days[today.getMonth()]){
+            changeMonth(day)
+        }
+    })
 
 })
