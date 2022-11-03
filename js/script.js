@@ -133,13 +133,17 @@ const febDays = (year) =>{
         return 28;
     }
 }
-const days = [31,febDays(currDate.getFullYear()),31,30,31,30,31,30,30,31,30,31]
+let days = [31,febDays(currDate.getFullYear()),31,30,31,30,31,30,30,31,30,31]
 const months = ['JAN','FEB','MAR','APR','MAJ','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const fullMonths = ['Januar','Februar','Mart','April','Maj','Jun','Jul','Avgust','Septembar','Oktobar','Novembar','Decembar']
 let year = document.querySelector('.year')
 let meseci = document.querySelector('.calendar-months');
 let dani = document.querySelector('.calendar-days')
-
+let curMoY = document.querySelector('.curMoY');
+let curDay = document.querySelector('.curDay')
 const DateChanged = async () =>{
+    curMoY.textContent = fullMonths[currDate.getMonth()]+'-'+currDate.getFullYear()
+    curDay.textContent = currDate.getDate();
     const URL = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=${currDate.getFullYear()}-${currDate.getMonth()+1}-${currDate.getDate()}`
     const src = await APICall(URL)
     currentImage.src = src;
