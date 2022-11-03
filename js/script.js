@@ -141,7 +141,9 @@ let dani = document.querySelector('.calendar-days')
 
 const DateChanged = async () =>{
     const URL = `https://api.nasa.gov/planetary/apod?api_key=${APIKey}&&thumbs=true&date=${currDate.getFullYear()}-${currDate.getMonth()+1}-${currDate.getDate()}`
-    currentImage.src = await APICall(URL)
+    const src = await APICall(URL)
+    currentImage.src = src;
+    document.querySelector('.calendar-photo').style.backgroundImage = `url("${src}")`
 }
 const deleteDays = () =>{
     while (dani.firstChild) {
@@ -229,4 +231,12 @@ document.querySelector('.closeCalendar').addEventListener('click',() =>{
     overlay.style.display = 'none'
 })
 
+document.querySelector('#reset').addEventListener('click',() =>{
+    let today =new Date()
+    changeYear(today.getFullYear());
+    meseci.querySelectorAll('div').forEach(month =>{
+        if(month.textContent === months[today.getMonth()])
+    })
+    changeMonth(months[today.getMonth()])
 
+})
