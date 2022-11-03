@@ -173,7 +173,23 @@ const generateDays = () =>{
     deleteDays();
     for(let i = 0; i<(currDate.getDay());i++){
         let elem = document.createElement('div');
-        elem.textContent = '';
+        elem.textContent = days[(12+currDate.getMonth()-1)%12]-currDate.getDay()+i+1;
+        elem.classList.add('prevDays')
+        elem.addEventListener('click',async () =>{
+            
+           if(!currDate.getMonth()){
+            currDate.setFullYear(currDate.getFullYear()-1)
+            year.textContent = `${currDate.getFullYear()}`;
+           }
+           await document.querySelectorAll('.calendar-months div').forEach(async month =>{
+            if(month.textContent == months[(12+currDate.getMonth()-1)%12]){
+                await changeMonth(month)
+            }
+            })
+            await currDate.setDate(elem.textContent);
+            await generateDays()
+            DateChanged();
+        })
         dani.appendChild(elem)
 
     }
@@ -190,8 +206,9 @@ const generateDays = () =>{
     }
 }
 const changeMonth = async (elem) =>{
+    if(currDate.getDate()> days[currDate.getMonth()-1])
+        currDate.setDate(days[currDate.getMonth()-1]);
     currDate.setMonth(months.indexOf(elem.textContent))
-    currDate.setDate(1)
     removeActiveM();
     elem.classList.add('activeMonth')
     generateDays();
@@ -235,7 +252,7 @@ document.querySelector('#reset').addEventListener('click',async () =>{
     let today =new Date()
     await changeYear(today.getFullYear());
     await meseci.querySelectorAll('div').forEach(async month =>{
-        if(month.textContent === months[today.getMonth()]){
+        if(month.textContent == months[today.getMonth()]){
             await changeMonth(month)
         }
     })
