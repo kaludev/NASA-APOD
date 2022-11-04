@@ -292,3 +292,77 @@ body{
     line-height: 1;
     color: #fff;
 }
+
+.animationBase{
+    display: flex;
+    flex-direction: row;
+    width: 90px;
+}
+
+.animationBase div{
+    background-color: #000;
+    width: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    transition: 0.2s;
+}
+
+.animation1{
+    height: 20px;
+    animation: rise1 1s infinite;
+}
+
+.animation2{
+    height: 40px;
+    animation: rise2 1s infinite;
+}
+
+.animation3{
+    height: 60px;
+    animation: rise3 1s infinite;
+}
+
+
+@keyframes rise1{
+    0%{
+        transform: scaleY(100%);
+    }
+
+    50%{
+        transform: scaleY(300%);
+    }
+
+    100%{
+        transform: scaleY(100%);
+    }
+}
+
+@keyframes rise2{
+    0%{
+        transform: scaleY(100%);
+    }
+    25%{
+        transform: scaleY(200%);
+    }
+
+    75%{
+        transform: scaleY(50%)
+    }
+    100%{
+        transform: scaleY(100%)
+    }
+}
+
+@keyframes rise3{
+    0%{
+        height:50px;
+    }
+    
+    50%{
+        height: 10px;
+    }
+    
+    100%{
+        height: 50px;
+    }
+}
